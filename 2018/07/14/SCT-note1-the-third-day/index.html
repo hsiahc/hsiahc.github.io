@@ -239,7 +239,7 @@
 
     
         <meta property="article:published_time" content="Sat Jul 14 2018 18:45:05 GMT+0800">
-        <meta property="article:modified_time" content="Sat Jul 14 2018 21:34:25 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jul 14 2018 21:40:44 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -262,7 +262,7 @@
     "mainEntityOfPage": "http://yoursite.com/2018/07/14/SCT-note1-the-third-day/index.html",
     "headline": "SSH公钥私钥实现服务器远程登陆（终端或XSHELL）",
     "datePublished": "Sat Jul 14 2018 18:45:05 GMT+0800",
-    "dateModified": "Sat Jul 14 2018 21:34:25 GMT+0800",
+    "dateModified": "Sat Jul 14 2018 21:40:44 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hootch fox",
@@ -486,26 +486,25 @@
 </blockquote>
 <p>0.首先你需要在终端安装SSH  （sudo apt-get install sshd）<br>并在终端开启SSH服务        (sudo service sshd start)                     </p>
 <p>1.使用在服务器上创建的远端密码和用户名来实现连接</p>
-<p>在Linux终端上的操作命令行如下：<br>  ssh 用户名@服务器IP<br>  passward:<br>&lt;&gt;<br>完成此操作你就已经登上了远端的服务器了</p>
+<p>在Linux终端上的操作命令行如下：<br>    ssh 用户名@服务器IP<br>    passward:</p>
+<p>完成此操作你就已经登上了远端的服务器了</p>
 <p>2.利用公钥和私钥的验证来实现免密登陆</p>
 <p>2.1.首先我们要了解公钥和私钥工作的方式，详细可以百度，简单地说即为当远端服务器中有你公钥，而你手中有私钥时，经过他们互相的验证，即实现了安全的免密登陆</p>
 <ul>
 <li>私钥 机密 可对你的私钥设置密码</li>
 <li>公钥 等同于安全的身份识别号或银行卡号</li>
 </ul>
-<p>2.2.那么如何生成我们需要的公钥和私钥呢？<br>打开自己的终端<br>命令如下：<br>  mkdir .ssh  //创建一个文件名为.ssh的隐藏文件夹<br>  cd .ssh/    //进入此文件夹<br>  ssh-keygen  //此时正在生成公钥和私钥</p>
+<p>2.2.那么如何生成我们需要的公钥和私钥呢？<br>打开自己的终端<br>命令如下：<br>    mkdir .ssh  //创建一个文件名为.ssh的隐藏文件夹<br>    cd .ssh/    //进入此文件夹<br>    ssh-keygen  //此时正在生成公钥和私钥</p>
 <p>一路回车默认生成在当前文件夹中，即.ssh ，而校验时默认检索文件即为.sshd<br>遇到Enter passphrase(empty for no passphrase)：时，请设置密码，这是一个好习惯 !<br>好啦你现在有公钥和私钥啦 ！<br>默认的公钥名为id_rsa.pub，私钥为id_rsa</p>
-<p>2.3.接下来要把公钥上传到远端服务器上<br>利用在1当中所描述的用户名和密码的方式登陆到远端服务器上<br>执行命令如下：<br>  mkdir .ssh  //创建一个文件名为.ssh的隐藏文件夹<br>  cd .ssh/    //进入此文件夹<br>  logout      //退出远端<br>&lt;&gt;<br>在自己的终端上，执行命令：<br>  cd .ssh/                                              //再次进入 .ssh文件<br>  scp id_rsa.pub 用户名@服务器IP:.ssh/                  //将公钥远程复制到远端服务器的.ssh文件当中（默认的公钥名为id_rsa.pub）<br>  enter your passward                                  //输入远端密码<br>&lt;&gt;</p>
+<p>2.3.接下来要把公钥上传到远端服务器上<br>利用在1当中所描述的用户名和密码的方式登陆到远端服务器上<br>执行命令如下：<br>    mkdir .ssh  //创建一个文件名为.ssh的隐藏文件夹<br>    cd .ssh/    //进入此文件夹<br>    logout      //退出远端</p>
+<p>在自己的终端上，执行命令：<br>    cd .ssh/                                              //再次进入 .ssh文件<br>    scp id_rsa.pub 用户名@服务器IP:.ssh/                  //将公钥远程复制到远端服务器的.ssh文件当中（默认的公钥名为id_rsa.pub）<br>    enter your passward                                  //输入远端密码</p>
 <blockquote>
-<p>基本操作完成！</p>
-<ul>
-<li>为什么说基本完成呢？因为文件在服务器当中都是有权限等级的</li>
-</ul>
+<p>基本操作完成！<br>！为什么说基本完成呢？因为文件在服务器当中都是有权限等级的</p>
 </blockquote>
 <p>3.1.文件权限简介（部分）</p>
 <p>修改文件权限:<br>利用数字类型修改权限<br>chmod [-R] xyz filename|dirname  -R:表示递归修改</p>
-<p>Linux文件的基本权限有9个,分别是owner,group,others三种身份各自的read,write,execute权限,3个一组.可以用数字代表各个权限:<br>    r:4<br>    w:2<br>    x:1<br>利用2进制表示,1代表有此权限,0表示没有此权限:<br> —: 000 =&gt; 0<br> –x: 001 =&gt; 1<br> -w-: 010 =&gt; 2<br> -wx: 011 =&gt; 3<br> r–: 100 =&gt; 4<br> r-x: 101 =&gt; 5<br> rw-: 110 =&gt; 6<br> rwx: 111 =&gt; 7<br> 因此:若将文件的权限修改为rwxrwx—,则对应的数字为 770.<br>eg: 将/etc/fstab文件的所有权限都启用: chmod 777 /etc/fstab<br> （以上修改文件权限内容摘自：<a href="https://blog.csdn.net/qq_36193761/article/details/78817500）" target="_blank" rel="noopener">https://blog.csdn.net/qq_36193761/article/details/78817500）</a></p>
-<p>3.2 修改权限<br>现在有了这些基础知识<br> 在远程终端输入:<br> ls -l .ssh //我们可以查看内部文件的权限等级<br> cd .ssh/   //进入文件<br> chmod 644 .ssh/xxx.xxx(xxx.xxx为文件名)将权限等级修改为 644</p>
+<p>Linux文件的基本权限有9个,分别是owner,group,others三种身份各自的read,write,execute权限,3个一组.可以用数字代表各个权限:<br>    r:4<br>    w:2<br>    x:1<br>利用2进制表示,1代表有此权限,0表示没有此权限:<br>  —: 000 =&gt; 0<br>  –x: 001 =&gt; 1<br>  -w-: 010 =&gt; 2<br>  -wx: 011 =&gt; 3<br>  r–: 100 =&gt; 4<br>  r-x: 101 =&gt; 5<br>  rw-: 110 =&gt; 6<br>  rwx: 111 =&gt; 7<br> 因此:若将文件的权限修改为rwxrwx—,则对应的数字为 770.<br>eg: 将/etc/fstab文件的所有权限都启用: chmod 777 /etc/fstab<br> （以上修改文件权限内容摘自：<a href="https://blog.csdn.net/qq_36193761/article/details/78817500）" target="_blank" rel="noopener">https://blog.csdn.net/qq_36193761/article/details/78817500）</a></p>
+<p>3.2 修改权限<br>现在有了这些基础知识<br> 在远程终端输入:<br>    ls -l .ssh //我们可以查看内部文件的权限等级<br>    cd .ssh/   //进入文件<br>    chmod 644 .ssh/xxx.xxx(xxx.xxx为文件名)将权限等级修改为 644</p>
 <p>complete!</p>
 <p>4.如何在其他平台或者同平台的SSH工具上解决远程连接问题</p>
 <blockquote>
@@ -513,7 +512,7 @@
 </blockquote>
 <p>4.1. 跨平台分享私钥<br>这可以通过邮件附件，聊天工具等</p>
 <p>4.2.在SSH工具装载私钥（密钥）<br>将保存下来的私钥导入到SSH工具当中，若在2.2中设置了passphrase需要键入</p>
-<p>4.3.在SSH工具连接远端服务器<br>命令：<br>  ssh 用户名@服务器IP</p>
+<p>4.3.在SSH工具连接远端服务器<br>命令：<br>      ssh 用户名@服务器IP</p>
 <p>全剧终。</p>
 
         
